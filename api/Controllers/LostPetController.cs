@@ -27,12 +27,5 @@ namespace api.Controllers
             return Ok(lostPetsDTO);
         }
 
-        [HttpGet("ping")]
-        public IActionResult Ping()
-        {
-            return Ok("API is working!");
-        }
-
-
     }
 }
