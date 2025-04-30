@@ -1,0 +1,19 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace api.Models
+{
+    public class Comment
+    {
+        public int CommentId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public int? PetId { get; set; }
+        [ForeignKey("PetId")]
+        public LostPet? LostPet { get; set; }
+    }
+}
