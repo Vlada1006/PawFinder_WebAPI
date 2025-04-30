@@ -14,6 +14,7 @@ namespace api.Mappers
         {
             return new LostPetDTO
             {
+                PetId = lostPetModel.PetId,
                 PetName = lostPetModel.PetName,
                 Breed = lostPetModel.Breed,
                 Age = lostPetModel.Age,

@@ -8,6 +8,7 @@ namespace api.DTOs
 {
     public class LostPetDTO
     {
+        public int PetId { get; set; }
         public string PetName { get; set; } = string.Empty;
         public string Breed { get; set; } = string.Empty;
         public int? Age { get; set; }
