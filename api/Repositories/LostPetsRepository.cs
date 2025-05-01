@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.LostPets;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
@@ -49,6 +50,25 @@ namespace api.Repositories
                 lostPets = lostPets.Where(u => u.Status == query.Status.Value);
             }
 
+
+            switch (query.SortBy)
+            {
+                case "name":
+                    lostPets = !query.IsDescending ? lostPets.OrderBy(s => s.PetName) : lostPets.OrderByDescending(s => s.PetName);
+                    break;
+                case "age":
+                    lostPets = !query.IsDescending ? lostPets.OrderBy(s => s.Age) : lostPets.OrderByDescending(s => s.Age);
+                    break;
+                case "location":
+                    lostPets = !query.IsDescending ? lostPets.OrderBy(s => s.LastLocation) : lostPets.OrderByDescending(s => s.LastLocation);
+                    break;
+                case "date":
+                    lostPets = !query.IsDescending ? lostPets.OrderBy(s => s.DateLost) : lostPets.OrderByDescending(s => s.DateLost);
+                    break;
+                default:
+                    break;
+            }
+
             lostPets = lostPets.Skip(query.Size * (query.Page - 1)).Take(query.Size);
 
             return await lostPets.ToListAsync();
@@ -65,5 +85,15 @@ namespace api.Repositories
             }
             return lostPet;
         }
+
+        public async Task<LostPet> CreateLostPet(LostPet lostPetModel)
+        {
+            await _db.LostPets.AddAsync(lostPetModel);
+            await _db.SaveChangesAsync();
+
+            return lostPetModel;
+        }
+
+
     }
 }

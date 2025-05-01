@@ -6,6 +6,7 @@ using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using api.Mappers;
 using api.Helpers;
+using api.DTOs.LostPets;
 
 namespace api.Controllers
 {
@@ -40,6 +41,22 @@ namespace api.Controllers
             }
             return Ok(lostPet);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateLostPet([FromBody] LostPetCreateRequestDTO lostPetDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var lostPetModel = lostPetDTO.ToLostPetFromCreateDto();
+            await _lostPetsRepo.CreateLostPet(lostPetModel);
+
+            return CreatedAtAction(nameof(GetLostPetById), new { id = lostPetModel.PetId }, lostPetModel.ToLostPetsDto());
+        }
+
+        
 
     }
 }

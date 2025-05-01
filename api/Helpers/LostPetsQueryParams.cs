@@ -9,7 +9,7 @@ namespace api.Helpers
     public class LostPetsQueryParams
     {
         const int _maxSize = 25;
-        private int _size;
+        private int _size = 50;
 
         public int Size
         {
@@ -27,6 +27,10 @@ namespace api.Helpers
         public string? Breed { get; set; }
         public string? NameSearchTerm { get; set; }
         public string? LocationSearchTerm { get; set; }
+
+
+        public string SortBy { get; set; } = "Id";
+        public bool IsDescending { get; set; } = false;
 
 
 
