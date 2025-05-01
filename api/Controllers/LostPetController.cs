@@ -30,7 +30,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> GetLostPetById(int id)
         {
             var lostPet = await _lostPetsRepo.GetLostPetById(id);
@@ -56,7 +56,26 @@ namespace api.Controllers
             return CreatedAtAction(nameof(GetLostPetById), new { id = lostPetModel.PetId }, lostPetModel.ToLostPetsDto());
         }
 
-        
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> UpdateLostPet(int id, [FromBody] LostPetUpdateRequestDTO updateDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var lostPetModel = await _lostPetsRepo.UpdateLostPet(id, updateDTO);
+
+            if (lostPetModel == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(lostPetModel.ToLostPetsDto());
+        }
+
+
 
     }
 }

@@ -75,7 +75,7 @@ namespace api.Repositories
 
         }
 
-        public async Task<LostPet> GetLostPetById(int id)
+        public async Task<LostPet?> GetLostPetById(int id)
         {
             var lostPet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
 
@@ -94,6 +94,29 @@ namespace api.Repositories
             return lostPetModel;
         }
 
+        public async Task<LostPet?> UpdateLostPet(int id, LostPetUpdateRequestDTO lostPetDTO)
+        {
+            var existingLostPet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
 
+            if (existingLostPet == null)
+            {
+                return null;
+            }
+
+            existingLostPet.PetName = lostPetDTO.PetName;
+            existingLostPet.Breed = lostPetDTO.Breed;
+            existingLostPet.Age = lostPetDTO.Age;
+            existingLostPet.Description = lostPetDTO.Description;
+            existingLostPet.LastLocation = lostPetDTO.LastLocation;
+            existingLostPet.DateLost = lostPetDTO.DateLost;
+            existingLostPet.ContactInfo = lostPetDTO.ContactInfo;
+            existingLostPet.PhotoUrl = lostPetDTO.PhotoUrl;
+            existingLostPet.Status = lostPetDTO.Status;
+
+            await _db.SaveChangesAsync();
+            return existingLostPet;
+
+
+        }
     }
 }
