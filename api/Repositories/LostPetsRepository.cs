@@ -139,5 +139,18 @@ namespace api.Repositories
             return existingPet;
 
         }
+
+        public async Task<LostPet?> DeleteLostPet(int id)
+        {
+            var existingPet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
+
+            if (existingPet == null)
+            {
+                return null;
+            }
+            _db.LostPets.Remove(existingPet);
+            await _db.SaveChangesAsync();
+            return existingPet;
+        }
     }
 }

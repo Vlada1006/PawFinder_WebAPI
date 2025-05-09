@@ -16,5 +16,6 @@ namespace api.Interfaces
         public Task<LostPet> CreateLostPet(LostPet lostPetModel);
         public Task<LostPet?> UpdateLostPet(int id, LostPetUpdateRequestDTO lostPetDTO);
         public Task<LostPet?> PartialUpdateLostPet(int id, LostPetPartialUpdateRequestDTO patchDTO);
+        public Task<LostPet?> DeleteLostPet(int id);
     }
 }

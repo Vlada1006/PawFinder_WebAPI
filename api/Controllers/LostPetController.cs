@@ -104,7 +104,17 @@ namespace api.Controllers
             return Ok(petToUpdate);
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteLostPet(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-
+            await _lostPetsRepo.DeleteLostPet(id);
+            return Ok("Yay! +1 happy pet!");
+        }
     }
 }
