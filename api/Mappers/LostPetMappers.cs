@@ -44,5 +44,20 @@ namespace api.Mappers
                 Status = lostPetDTO.Status,
             };
         }
+
+        public static LostPet ToLostPetFromPatchUpdateDto(this LostPetPartialUpdateRequestDTO lostPetDTO)
+        {
+            return new LostPet
+            {
+                PetName = lostPetDTO.PetName,
+                Breed = lostPetDTO.Breed,
+                Age = lostPetDTO.Age,
+                Description = lostPetDTO.Description,
+                LastLocation = lostPetDTO.LastLocation,
+                ContactInfo = lostPetDTO.ContactInfo,
+                PhotoUrl = lostPetDTO.PhotoUrl,
+                Status = lostPetDTO.Status,
+            };
+        }
     }
 }

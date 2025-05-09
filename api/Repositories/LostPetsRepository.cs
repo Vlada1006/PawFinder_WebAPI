@@ -7,6 +7,7 @@ using api.DTOs.LostPets;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -49,7 +50,6 @@ namespace api.Repositories
             {
                 lostPets = lostPets.Where(u => u.Status == query.Status.Value);
             }
-
 
             switch (query.SortBy)
             {
@@ -115,7 +115,28 @@ namespace api.Repositories
 
             await _db.SaveChangesAsync();
             return existingLostPet;
+        }
 
+        public async Task<LostPet?> PartialUpdateLostPet(int id, LostPetPartialUpdateRequestDTO patchDTO)
+        {
+            var existingPet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
+
+            if (existingPet == null)
+            {
+                return null;
+            }
+
+            if (patchDTO.PetName != null) existingPet.PetName = patchDTO.PetName;
+            if (patchDTO.Breed != null) existingPet.Breed = patchDTO.Breed;
+            if (patchDTO.Age != 0) existingPet.Age = patchDTO.Age;
+            if (patchDTO.Description != null) existingPet.Description = patchDTO.Description;
+            if (patchDTO.LastLocation != null) existingPet.LastLocation = patchDTO.LastLocation;
+            if (patchDTO.ContactInfo != null) existingPet.ContactInfo = patchDTO.ContactInfo;
+            if (patchDTO.PhotoUrl != null) existingPet.PhotoUrl = patchDTO.PhotoUrl;
+            if (patchDTO.Status != 0) existingPet.Status = patchDTO.Status;
+
+            await _db.SaveChangesAsync();
+            return existingPet;
 
         }
     }

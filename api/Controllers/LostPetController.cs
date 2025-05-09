@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using api.Mappers;
 using api.Helpers;
 using api.DTOs.LostPets;
+using Microsoft.AspNetCore.JsonPatch;
+using api.Models;
 
 namespace api.Controllers
 {
@@ -73,6 +75,33 @@ namespace api.Controllers
             }
 
             return Ok(lostPetModel.ToLostPetsDto());
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public async Task<IActionResult> PartialUpdateLostPet(int id, [FromBody] JsonPatchDocument<LostPetPartialUpdateRequestDTO> patchDoc)
+        {
+            if (!ModelState.IsValid || patchDoc == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var patchDTO = new LostPetPartialUpdateRequestDTO();
+
+            patchDoc.ApplyTo(patchDTO, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var petToUpdate = await _lostPetsRepo.PartialUpdateLostPet(id, patchDTO);
+
+            if (petToUpdate == null)
+            {
+                return NotFound();
+            }
+            return Ok(petToUpdate);
         }
 
 
