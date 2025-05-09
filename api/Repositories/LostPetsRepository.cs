@@ -7,7 +7,9 @@ using api.DTOs.LostPets;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -151,6 +153,34 @@ namespace api.Repositories
             _db.LostPets.Remove(existingPet);
             await _db.SaveChangesAsync();
             return existingPet;
+        }
+
+        public async Task<IEnumerable<LostPet?>> DeleteMultipleLostPets([FromQuery] int[] ids)
+        {
+            var lostPets = new List<LostPet>();
+
+            foreach (var id in ids)
+            {
+                var pet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
+
+                if (pet == null)
+                {
+                    continue;
+                }
+
+                lostPets.Add(pet);
+            }
+
+            if (lostPets.Count == 0)
+            {
+                return Enumerable.Empty<LostPet>();
+            }
+
+            _db.LostPets.RemoveRange(lostPets);
+            await _db.SaveChangesAsync();
+
+            return lostPets;
+
         }
     }
 }

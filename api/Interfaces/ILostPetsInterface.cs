@@ -6,6 +6,7 @@ using api.DTOs.LostPets;
 using api.Helpers;
 using api.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api.Interfaces
 {
@@ -17,5 +18,6 @@ namespace api.Interfaces
         public Task<LostPet?> UpdateLostPet(int id, LostPetUpdateRequestDTO lostPetDTO);
         public Task<LostPet?> PartialUpdateLostPet(int id, LostPetPartialUpdateRequestDTO patchDTO);
         public Task<LostPet?> DeleteLostPet(int id);
+        public Task<IEnumerable<LostPet?>> DeleteMultipleLostPets([FromQuery] int[] ids);
     }
 }

@@ -116,5 +116,25 @@ namespace api.Controllers
             await _lostPetsRepo.DeleteLostPet(id);
             return Ok("Yay! +1 happy pet!");
         }
+
+        [HttpDelete]
+        [Route("multiple")]
+        public async Task<IActionResult> DeleteMultipleLostPets([FromQuery] int[] ids)
+        {
+            if (ids == null || ids.Length == 0)
+            {
+                return BadRequest("No IDs provided!");
+            }
+
+            var lostPetsToDelete = await _lostPetsRepo.DeleteMultipleLostPets(ids);
+
+            if (lostPetsToDelete == null || !lostPetsToDelete.Any())
+            {
+                return NotFound("There are no pets with these IDs!");
+            }
+
+            return Ok("These pet's info was deleted successfully!");
+
+        }
     }
 }
