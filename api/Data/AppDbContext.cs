@@ -15,5 +15,16 @@ namespace api.Data
 
         public DbSet<LostPet> LostPets { get; set; }
         public DbSet<Comment> Comments { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LostPet>()
+            .HasMany(u => u.Comments)
+            .WithOne(u => u.LostPet)
+            .HasForeignKey(u => u.PetId);
+        }
     }
 }

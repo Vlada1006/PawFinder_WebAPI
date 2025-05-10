@@ -10,10 +10,14 @@ namespace api.Models
     {
         [Key]
         public int PetId { get; set; }
+        [MaxLength(50)]
         public string PetName { get; set; } = string.Empty;
+        [MaxLength(50)]
         public string Breed { get; set; } = string.Empty;
         public int? Age { get; set; }
+        [MaxLength(250)]
         public string Description { get; set; } = string.Empty;
+        [MaxLength(50)]
         public string LastLocation { get; set; } = string.Empty;
         public DateTime DateLost { get; set; }
         public string ContactInfo { get; set; } = string.Empty;

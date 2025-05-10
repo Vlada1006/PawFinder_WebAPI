@@ -25,7 +25,7 @@ namespace api.Mappers
                 ContactInfo = lostPetModel.ContactInfo,
                 PhotoUrl = lostPetModel.PhotoUrl,
                 Status = lostPetModel.Status,
-                //add comments here when comment dto is ready
+                Comments = lostPetModel.Comments.Select(u => u.ToCommentDto()).ToList()
             };
         }
 
@@ -41,7 +41,7 @@ namespace api.Mappers
                 DateLost = lostPetDTO.DateLost,
                 ContactInfo = lostPetDTO.ContactInfo,
                 PhotoUrl = lostPetDTO.PhotoUrl,
-                Status = lostPetDTO.Status,
+                Status = lostPetDTO.Status
             };
         }
 
@@ -56,7 +56,7 @@ namespace api.Mappers
                 LastLocation = lostPetDTO.LastLocation,
                 ContactInfo = lostPetDTO.ContactInfo,
                 PhotoUrl = lostPetDTO.PhotoUrl,
-                Status = lostPetDTO.Status,
+                Status = lostPetDTO.Status
             };
         }
     }

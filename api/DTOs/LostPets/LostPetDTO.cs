@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.DTOs.Comments;
 using api.Models;
 
 namespace api.DTOs
@@ -18,6 +19,6 @@ namespace api.DTOs
         public string ContactInfo { get; set; } = string.Empty;
         public string PhotoUrl { get; set; } = string.Empty;
         public PetStatusEnum Status { get; set; }
-        public List<Comment> Comments { get; set; } = new List<Comment>();
+        public List<CommentDTO>? Comments { get; set; }
     }
 }

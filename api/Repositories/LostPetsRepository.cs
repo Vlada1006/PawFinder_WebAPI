@@ -25,7 +25,7 @@ namespace api.Repositories
 
         public async Task<List<LostPet>> GetLostPets(LostPetsQueryParams query)
         {
-            var lostPets = _db.LostPets.AsQueryable();
+            var lostPets = _db.LostPets.Include(u => u.Comments).AsQueryable();
 
             if (!string.IsNullOrEmpty(query.NameSearchTerm))
             {
@@ -79,7 +79,7 @@ namespace api.Repositories
 
         public async Task<LostPet?> GetLostPetById(int id)
         {
-            var lostPet = await _db.LostPets.FirstOrDefaultAsync(u => u.PetId == id);
+            var lostPet = await _db.LostPets.Include(u => u.Comments).FirstOrDefaultAsync(u => u.PetId == id);
 
             if (lostPet == null)
             {

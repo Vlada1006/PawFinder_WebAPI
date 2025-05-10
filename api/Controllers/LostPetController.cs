@@ -39,9 +39,11 @@ namespace api.Controllers
 
             if (lostPet == null)
             {
-                return BadRequest();
+                return NotFound();
             }
-            return Ok(lostPet);
+
+            var lostPetDTO = lostPet.ToLostPetsDto();
+            return Ok(lostPetDTO);
         }
 
         [HttpPost]
