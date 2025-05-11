@@ -52,9 +52,9 @@ namespace api.Controllers
         {
             var comments = await _lostPetsRepo.GetCommentsByPetId(id);
 
-            if (comments == null)
+            if (comments.Count == 0)
             {
-                return NotFound();
+                return NotFound("No comments found for this pet.");
             }
 
             var commentDTO = comments.Select(s => s.ToCommentForGetAllDto());
