@@ -46,6 +46,22 @@ namespace api.Controllers
             return Ok(lostPetDTO);
         }
 
+        [HttpGet]
+        [Route("{id:int}/comments")]
+        public async Task<IActionResult> GetAllCommentsByPetId(int id)
+        {
+            var comments = await _lostPetsRepo.GetCommentsByPetId(id);
+
+            if (comments == null)
+            {
+                return NotFound();
+            }
+
+            var commentDTO = comments.Select(s => s.ToCommentForGetAllDto());
+
+            return Ok(commentDTO);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateLostPet([FromBody] LostPetCreateRequestDTO lostPetDTO)
         {
@@ -80,7 +96,7 @@ namespace api.Controllers
         }
 
         [HttpPatch]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> PartialUpdateLostPet(int id, [FromBody] JsonPatchDocument<LostPetPartialUpdateRequestDTO> patchDoc)
         {
             if (!ModelState.IsValid || patchDoc == null)
@@ -107,7 +123,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> DeleteLostPet(int id)
         {
             if (!ModelState.IsValid)

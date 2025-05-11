@@ -15,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<ILostPetsInterface, LostPetsRepository>();
+builder.Services.AddScoped<ICommentsInterface, CommentRepository>();
 
 var app = builder.Build();
 

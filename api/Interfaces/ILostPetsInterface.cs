@@ -14,6 +14,7 @@ namespace api.Interfaces
     {
         public Task<List<LostPet>> GetLostPets(LostPetsQueryParams query);
         public Task<LostPet?> GetLostPetById(int id);
+        public Task<List<Comment?>> GetCommentsByPetId(int id);
         public Task<LostPet> CreateLostPet(LostPet lostPetModel);
         public Task<LostPet?> UpdateLostPet(int id, LostPetUpdateRequestDTO lostPetDTO);
         public Task<LostPet?> PartialUpdateLostPet(int id, LostPetPartialUpdateRequestDTO patchDTO);

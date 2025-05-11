@@ -88,6 +88,18 @@ namespace api.Repositories
             return lostPet;
         }
 
+        public async Task<List<Comment?>> GetCommentsByPetId(int id)
+        {
+            var comments = await _db.Comments.Where(u => u.PetId == id).ToListAsync();
+
+            if (comments == null)
+            {
+                return null;
+            }
+
+            return comments;
+        }
+
         public async Task<LostPet> CreateLostPet(LostPet lostPetModel)
         {
             await _db.LostPets.AddAsync(lostPetModel);

@@ -18,5 +18,17 @@ namespace api.Mappers
                 CreatedOn = commentModel.CreatedOn
             };
         }
+
+        public static CommentForGetAllDTO ToCommentForGetAllDto(this Comment commentModel)
+        {
+            return new CommentForGetAllDTO
+            {
+                CommentId = commentModel.CommentId,
+                Title = commentModel.Title,
+                Content = commentModel.Content,
+                CreatedOn = commentModel.CreatedOn,
+                PetId = commentModel.PetId
+            };
+        }
     }
 }
