@@ -46,7 +46,7 @@ namespace api.Controllers
         //check if with deleting pet comments stay
         [HttpPost]
         [Route("{petId:int}")]
-        public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequestDTO createDTO, int petId)
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequestDTO createDTO, [FromRoute] int petId)
         {
             if (!ModelState.IsValid)
             {
@@ -57,6 +57,24 @@ namespace api.Controllers
             await _commentRepo.CreateComment(commentModel);
 
             return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.CommentId }, commentModel.ToCommentDto());
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentRequestDTO updateDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var commentToUpdate = await _commentRepo.UpdateComment(id, updateDTO);
+
+            if (commentToUpdate == null)
+            {
+                return NotFound("Comment not found.");
+            }
+
+            return Ok(commentToUpdate.ToCommentDto());
         }
     }
 }

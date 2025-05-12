@@ -40,5 +40,14 @@ namespace api.Mappers
                 PetId = petId
             };
         }
+
+        public static Comment ToUpdateCommentRequestDto(this UpdateCommentRequestDTO updateDTO)
+        {
+            return new Comment
+            {
+                Title = updateDTO.Title,
+                Content = updateDTO.Content,
+            };
+        }
     }
 }

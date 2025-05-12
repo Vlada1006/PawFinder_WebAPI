@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using api.Data;
+using api.DTOs.Comments;
 using api.Interfaces;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,23 @@ namespace api.Repositories
             await _db.SaveChangesAsync();
 
             return commentModel;
+        }
+
+        public async Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO updateDTO)
+        {
+            var existingComment = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
+
+            if (existingComment == null)
+            {
+                return null;
+            }
+
+            existingComment.Title = updateDTO.Title;
+            existingComment.Content = updateDTO.Content;
+
+            await _db.SaveChangesAsync();
+
+            return existingComment;
         }
     }
 }
