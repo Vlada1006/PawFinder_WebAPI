@@ -24,7 +24,8 @@ namespace api.Data
             modelBuilder.Entity<LostPet>()
             .HasMany(u => u.Comments)
             .WithOne(u => u.LostPet)
-            .HasForeignKey(u => u.PetId);
+            .HasForeignKey(u => u.PetId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
