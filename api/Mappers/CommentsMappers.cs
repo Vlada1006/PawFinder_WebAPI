@@ -30,5 +30,15 @@ namespace api.Mappers
                 PetId = commentModel.PetId
             };
         }
+
+        public static Comment ToCreateCommentRequestDto(this CreateCommentRequestDTO createDTO, int petId)
+        {
+            return new Comment
+            {
+                Title = createDTO.Title,
+                Content = createDTO.Content,
+                PetId = petId
+            };
+        }
     }
 }

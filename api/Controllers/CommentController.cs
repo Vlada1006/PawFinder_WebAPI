@@ -14,9 +14,11 @@ namespace api.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentsInterface _commentRepo;
-        public CommentController(ICommentsInterface commentRepo)
+        private readonly ILostPetsInterface _lostPetRepo;
+        public CommentController(ICommentsInterface commentRepo, ILostPetsInterface lostPetRepo)
         {
             _commentRepo = commentRepo;
+            _lostPetRepo = lostPetRepo;
         }
 
         [HttpGet]
@@ -26,6 +28,35 @@ namespace api.Controllers
             var commentDTO = commentsModel.Select(s => s.ToCommentForGetAllDto());
 
             return Ok(commentDTO);
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetCommentById([FromRoute] int id)
+        {
+            var comment = await _commentRepo.GetCommentById(id);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(comment.ToCommentDto());
+        }
+        //check if with deleting pet comments stay
+        [HttpPost]
+        [Route("{petId:int}")]
+        public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequestDTO createDTO, int petId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var commentModel = createDTO.ToCreateCommentRequestDto(petId);
+            await _commentRepo.CreateComment(commentModel);
+
+            return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.CommentId }, commentModel.ToCommentDto());
         }
     }
 }

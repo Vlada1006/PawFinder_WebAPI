@@ -25,5 +25,26 @@ namespace api.Repositories
 
             return comments;
         }
+
+        public async Task<Comment?> GetCommentById(int id)
+        {
+            var comment = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
+
+            if (comment == null)
+            {
+                return null;
+            }
+
+            return comment;
+        }
+
+
+        public async Task<Comment> CreateComment(Comment commentModel)
+        {
+            await _db.Comments.AddAsync(commentModel);
+            await _db.SaveChangesAsync();
+
+            return commentModel;
+        }
     }
 }
