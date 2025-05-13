@@ -48,7 +48,7 @@ namespace api.Repositories
             return commentModel;
         }
 
-        public async Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO updateDTO)
+        public async Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO commentDTO)
         {
             var existingComment = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
 
@@ -57,8 +57,25 @@ namespace api.Repositories
                 return null;
             }
 
-            existingComment.Title = updateDTO.Title;
-            existingComment.Content = updateDTO.Content;
+            existingComment.Title = commentDTO.Title;
+            existingComment.Content = commentDTO.Content;
+
+            await _db.SaveChangesAsync();
+
+            return existingComment;
+        }
+
+        public async Task<Comment?> PartialUpdateComment(int id, PartialUpdateCommentRequestDTO patchCommentsDTO)
+        {
+            var existingComment = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
+
+            if (existingComment == null)
+            {
+                return null;
+            }
+
+            if (patchCommentsDTO.Title != null) existingComment.Title = patchCommentsDTO.Title;
+            if (patchCommentsDTO.Content != null) existingComment.Content = patchCommentsDTO.Content;
 
             await _db.SaveChangesAsync();
 

@@ -49,5 +49,14 @@ namespace api.Mappers
                 Content = updateDTO.Content,
             };
         }
+
+        public static Comment ToPartialUpdateCommentRequestDto(this PartialUpdateCommentRequestDTO updateDTO)
+        {
+            return new Comment
+            {
+                Title = updateDTO.Title ?? string.Empty,
+                Content = updateDTO.Content ?? string.Empty,
+            };
+        }
     }
 }

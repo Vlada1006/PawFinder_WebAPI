@@ -12,6 +12,7 @@ namespace api.Interfaces
         public Task<List<Comment>> GetComments();
         public Task<Comment?> GetCommentById(int id);
         public Task<Comment> CreateComment(Comment commentModel);
-        public Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO updateDTO);
+        public Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO commentDTO);
+        public Task<Comment?> PartialUpdateComment(int id, PartialUpdateCommentRequestDTO updateDTO);
     }
 }

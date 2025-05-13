@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using api.DTOs.Comments;
 using api.Interfaces;
 using api.Mappers;
+using Azure;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -14,11 +16,9 @@ namespace api.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentsInterface _commentRepo;
-        private readonly ILostPetsInterface _lostPetRepo;
-        public CommentController(ICommentsInterface commentRepo, ILostPetsInterface lostPetRepo)
+        public CommentController(ICommentsInterface commentRepo)
         {
             _commentRepo = commentRepo;
-            _lostPetRepo = lostPetRepo;
         }
 
         [HttpGet]
@@ -43,7 +43,7 @@ namespace api.Controllers
 
             return Ok(comment.ToCommentDto());
         }
-        //check if with deleting pet comments stay
+
         [HttpPost]
         [Route("{petId:int}")]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequestDTO createDTO, [FromRoute] int petId)
@@ -75,6 +75,34 @@ namespace api.Controllers
             }
 
             return Ok(commentToUpdate.ToCommentDto());
+        }
+
+        [HttpPatch]
+        [Route("{id:int}")]
+        public async Task<IActionResult> PartialUpdateComment(int id, [FromBody] JsonPatchDocument<PartialUpdateCommentRequestDTO> patchDoc)
+        {
+            if (!ModelState.IsValid || patchDoc == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var patchDTO = new PartialUpdateCommentRequestDTO();
+
+            patchDoc.ApplyTo(patchDTO, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var commentToUpdate = await _commentRepo.PartialUpdateComment(id, patchDTO);
+
+            if (commentToUpdate == null)
+            {
+                return NotFound("There's no such comment.");
+            }
+
+            return Ok(commentToUpdate);
         }
     }
 }

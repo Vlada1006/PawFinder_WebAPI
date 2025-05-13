@@ -49,13 +49,13 @@ namespace api.Mappers
         {
             return new LostPet
             {
-                PetName = lostPetDTO.PetName,
-                Breed = lostPetDTO.Breed,
+                PetName = lostPetDTO.PetName ?? string.Empty,
+                Breed = lostPetDTO.Breed ?? string.Empty,
                 Age = lostPetDTO.Age,
-                Description = lostPetDTO.Description,
-                LastLocation = lostPetDTO.LastLocation,
-                ContactInfo = lostPetDTO.ContactInfo,
-                PhotoUrl = lostPetDTO.PhotoUrl,
+                Description = lostPetDTO.Description ?? string.Empty,
+                LastLocation = lostPetDTO.LastLocation ?? string.Empty,
+                ContactInfo = lostPetDTO.ContactInfo ?? string.Empty,
+                PhotoUrl = lostPetDTO.PhotoUrl ?? string.Empty,
                 Status = lostPetDTO.Status
             };
         }

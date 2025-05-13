@@ -8,13 +8,13 @@ namespace api.DTOs.LostPets
 {
     public class LostPetPartialUpdateRequestDTO
     {
-        public string PetName { get; set; } = string.Empty;
-        public string Breed { get; set; } = string.Empty;
+        public string? PetName { get; set; }
+        public string? Breed { get; set; }
         public int Age { get; set; }
-        public string Description { get; set; } = string.Empty;
-        public string LastLocation { get; set; } = string.Empty;
-        public string ContactInfo { get; set; } = string.Empty;
-        public string PhotoUrl { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string? LastLocation { get; set; }
+        public string? ContactInfo { get; set; }
+        public string? PhotoUrl { get; set; }
         public PetStatusEnum Status { get; set; }
     }
 }
