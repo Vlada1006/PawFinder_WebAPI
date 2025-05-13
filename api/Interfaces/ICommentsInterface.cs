@@ -14,5 +14,7 @@ namespace api.Interfaces
         public Task<Comment> CreateComment(Comment commentModel);
         public Task<Comment?> UpdateComment(int id, UpdateCommentRequestDTO commentDTO);
         public Task<Comment?> PartialUpdateComment(int id, PartialUpdateCommentRequestDTO updateDTO);
+        public Task<Comment?> DeleteComment(int id);
+        public Task<IEnumerable<Comment?>> DeleteMultipleComments(int[] ids);
     }
 }

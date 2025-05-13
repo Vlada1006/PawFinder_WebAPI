@@ -104,5 +104,38 @@ namespace api.Controllers
 
             return Ok(commentToUpdate);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _commentRepo.DeleteComment(id);
+
+            return Ok("Deleted.");
+        }
+
+        [HttpDelete]
+        [Route("multiple")]
+        public async Task<IActionResult> DeleteMultipleComments([FromQuery] int[] ids)
+        {
+            if (!ModelState.IsValid || ids.Length == 0 || ids == null)
+            {
+                return BadRequest("No comments found!");
+            }
+
+            var commentsToDelete = await _commentRepo.DeleteMultipleComments(ids);
+
+            if (commentsToDelete == null || !commentsToDelete.Any())
+            {
+                return NotFound("No comments to delete!");
+            }
+
+            return Ok("Deleted.");
+        }
     }
 }

@@ -81,5 +81,48 @@ namespace api.Repositories
 
             return existingComment;
         }
+
+        public async Task<Comment?> DeleteComment(int id)
+        {
+            var commentToDelete = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
+
+            if (commentToDelete == null)
+            {
+                return null;
+            }
+
+            _db.Comments.Remove(commentToDelete);
+
+            await _db.SaveChangesAsync();
+
+            return commentToDelete;
+        }
+
+        public async Task<IEnumerable<Comment?>> DeleteMultipleComments(int[] ids)
+        {
+            var comments = new List<Comment>();
+
+            foreach (var id in ids)
+            {
+                var comment = await _db.Comments.FirstOrDefaultAsync(u => u.CommentId == id);
+
+                if (comment == null)
+                {
+                    continue;
+                }
+
+                comments.Add(comment);
+            }
+
+            if (comments.Count == 0)
+            {
+                return Enumerable.Empty<Comment>();
+            }
+
+            _db.Comments.RemoveRange(comments);
+            await _db.SaveChangesAsync();
+
+            return comments;
+        }
     }
 }
