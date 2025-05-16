@@ -6,6 +6,7 @@ using api.DTOs.Comments;
 using api.Interfaces;
 using api.Mappers;
 using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Route("{petId:int}")]
+        [Authorize]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentRequestDTO createDTO, [FromRoute] int petId)
         {
             if (!ModelState.IsValid)
@@ -61,6 +63,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentRequestDTO updateDTO)
         {
             if (!ModelState.IsValid)
@@ -79,6 +82,7 @@ namespace api.Controllers
 
         [HttpPatch]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> PartialUpdateComment(int id, [FromBody] JsonPatchDocument<PartialUpdateCommentRequestDTO> patchDoc)
         {
             if (!ModelState.IsValid || patchDoc == null)
@@ -107,6 +111,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteComment(int id)
         {
             if (!ModelState.IsValid)
@@ -121,6 +126,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("multiple")]
+        [Authorize]
         public async Task<IActionResult> DeleteMultipleComments([FromQuery] int[] ids)
         {
             if (!ModelState.IsValid || ids.Length == 0 || ids == null)

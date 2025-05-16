@@ -9,6 +9,7 @@ using api.Helpers;
 using api.DTOs.LostPets;
 using Microsoft.AspNetCore.JsonPatch;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -63,6 +64,7 @@ namespace api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateLostPet([FromBody] LostPetCreateRequestDTO lostPetDTO)
         {
             if (!ModelState.IsValid)
@@ -78,6 +80,7 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> UpdateLostPet(int id, [FromBody] LostPetUpdateRequestDTO updateDTO)
         {
             if (!ModelState.IsValid)
@@ -97,6 +100,7 @@ namespace api.Controllers
 
         [HttpPatch]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> PartialUpdateLostPet(int id, [FromBody] JsonPatchDocument<LostPetPartialUpdateRequestDTO> patchDoc)
         {
             if (!ModelState.IsValid || patchDoc == null)
@@ -124,6 +128,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLostPet(int id)
         {
             if (!ModelState.IsValid)
@@ -137,6 +142,7 @@ namespace api.Controllers
 
         [HttpDelete]
         [Route("multiple")]
+        [Authorize]
         public async Task<IActionResult> DeleteMultipleLostPets([FromQuery] int[] ids)
         {
             if (ids == null || ids.Length == 0)

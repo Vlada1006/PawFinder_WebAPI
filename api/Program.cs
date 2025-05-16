@@ -1,6 +1,7 @@
 using api.Data;
 using api.Interfaces;
 using api.Repositories;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -50,22 +51,22 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<ILostPetsInterface, LostPetsRepository>();
 builder.Services.AddScoped<ICommentsInterface, CommentRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseRouting();
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
 
 app.MapControllers();
 
