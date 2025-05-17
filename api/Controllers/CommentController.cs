@@ -23,7 +23,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllComments(CommentForGetAllDTO commentForGetDTO)
+        public async Task<IActionResult> GetAllComments([FromQuery] CommentForGetAllDTO commentForGetDTO)
         {
             var commentsModel = await _commentRepo.GetComments();
             var commentDTO = commentsModel.Select(s => s.ToCommentForGetAllDto());
